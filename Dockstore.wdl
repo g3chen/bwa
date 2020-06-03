@@ -26,7 +26,7 @@ workflow bwaMem {
         trimMinQuality: "minimum quality of read ends to keep [0]"
         adapter1: "adapter sequence to trim from read 1 [AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC]"
         adapter2: "adapter sequence to trim from read 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]"
-		docker: "docker container to run the workflow in"
+		docker: "Docker container to run the workflow in"
     }
 
     if (numChunk > 1) {
@@ -64,26 +64,30 @@ workflow bwaMem {
                 trimMinLength = trimMinLength,
                 trimMinQuality = trimMinQuality,
                 adapter1 = adapter1,
-                adapter2 = adapter2
+                adapter2 = adapter2,
+				docker = docker
             }
         }
         call runBwaMem  { 
                 input: 
                 read1s = select_first([adapterTrimming.resultR1, p.left]),
                 read2s = select_first([adapterTrimming.resultR2, p.right]),
-                readGroups = readGroups
+                readGroups = readGroups,
+				docker = docker
         }    
     }
 
     call bamMerge {
         input:
         bams = runBwaMem.outputBam,
-        outputFileNamePrefix = outputFileNamePrefix
+        outputFileNamePrefix = outputFileNamePrefix,
+		docker = docker
     }
 
     call indexBam { 
         input: 
-        inputBam = bamMerge.outputMergedBam
+        inputBam = bamMerge.outputMergedBam,
+		docker = docker
     }
 
     if (doTrim) {
@@ -91,7 +95,8 @@ workflow bwaMem {
             input:
             inputLogs = select_all(adapterTrimming.log),
             outputFileNamePrefix = outputFileNamePrefix,
-            numChunk = numChunk
+            numChunk = numChunk,
+			docker = docker
         }
     }
 
@@ -142,6 +147,7 @@ task countChunkSize{
         numChunk: "Number of chunks to split fastq file"
         jobMemory: "Memory allocated for this job"
         timeout: "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
     
     command <<<
@@ -151,8 +157,8 @@ task countChunkSize{
     >>>
     
     runtime {
-		docker: docker
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         timeout: "~{timeout}"
     }
     
@@ -184,6 +190,7 @@ task slicer {
         modules: "Required environment modules"
         jobMemory: "Memory allocated for this job"
         timeout: "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
     
     command <<<
@@ -192,8 +199,8 @@ task slicer {
     >>>
     
     runtime {
-		docker: docker
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         modules: "~{modules}"
         timeout: "~{timeout}"
     } 
@@ -222,6 +229,7 @@ task adapterTrimming {
         String? addParam
         Int jobMemory = 16
         Int timeout = 48
+		String docker
     }
     
     parameter_meta {
@@ -235,6 +243,7 @@ task adapterTrimming {
         addParam: "Additional cutadapt parameters"
         jobMemory: "Memory allocated for this job"
         timeout: "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
     
     String resultFastqR1 = "~{basename(fastqR1, ".fastq.gz")}.trim.fastq.gz"
@@ -255,7 +264,8 @@ task adapterTrimming {
     >>>
     
     runtime {
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         modules: "~{modules}"
         timeout: "~{timeout}"
     } 
@@ -288,6 +298,7 @@ task runBwaMem {
         Int threads = 8
         Int jobMemory = 32
         Int timeout = 96
+		String docker
     }
 
     parameter_meta {
@@ -300,6 +311,7 @@ task runBwaMem {
         threads: "Requested CPU threads"
         jobMemory: "Memory allocated for this job"
         timeout: "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
     
     String resultBam = "~{basename(read1s)}.bam"
@@ -319,6 +331,7 @@ task runBwaMem {
     >>>
 
     runtime {
+		docker:	 "~{docker}"
         modules: "~{modules}"
         memory:  "~{jobMemory} GB"
         cpu:     "~{threads}"
@@ -344,6 +357,7 @@ task bamMerge{
         Int   jobMemory = 32
         String modules  = "samtools/1.9"
         Int timeout     = 72
+		String docker
     }
     parameter_meta {
         bams:  "Input bam files"
@@ -351,6 +365,7 @@ task bamMerge{
         jobMemory: "Memory allocated indexing job"
         modules:   "Required environment modules"
         timeout:   "Hours before task timeout"    
+		docker: "Docker container to run the workflow in"
     }
 
     String resultMergedBam = "~{outputFileNamePrefix}.bam"
@@ -364,7 +379,8 @@ task bamMerge{
     >>>
 
     runtime {
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         modules: "~{modules}"
         timeout: "~{timeout}"
     }
@@ -386,12 +402,14 @@ task indexBam {
         Int   jobMemory = 12
         String modules  = "samtools/1.9"
         Int timeout     = 48
+		String docker
     }
     parameter_meta {
         inputBam:  "Input bam file"
         jobMemory: "Memory allocated indexing job"
         modules:   "Modules for running indexing job"
         timeout:   "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
 
     String resultBai = "~{basename(inputBam)}.bai"
@@ -402,7 +420,8 @@ task indexBam {
     >>>
 
     runtime {
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         modules: "~{modules}"
         timeout: "~{timeout}"
     }
@@ -426,7 +445,7 @@ task adapterTrimmingLog {
         Int   numChunk
         Int   jobMemory = 12
         Int timeout     = 48
-
+		String docker
     }
     parameter_meta {
         inputLogs:  "Input log files"
@@ -434,6 +453,7 @@ task adapterTrimmingLog {
         numChunk: "Number of chunks to split fastq file"
         jobMemory: "Memory allocated indexing job"
         timeout:   "Hours before task timeout"
+		docker: "Docker container to run the workflow in"
     }
 
     String allLog = "~{outputFileNamePrefix}.txt"
@@ -482,7 +502,8 @@ task adapterTrimmingLog {
     >>>
 
     runtime {
-        memory: "~{jobMemory} GB"
+		docker:  "~{docker}"
+        memory:  "~{jobMemory} GB"
         timeout: "~{timeout}"
     }
   
