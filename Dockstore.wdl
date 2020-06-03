@@ -12,6 +12,7 @@ workflow bwaMem {
         Int trimMinQuality = 0
         String adapter1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"
         String adapter2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
+		String docker = "biocontainers/bwa:v0.7.17_cv1"
     }
 
     parameter_meta {
@@ -25,25 +26,28 @@ workflow bwaMem {
         trimMinQuality: "minimum quality of read ends to keep [0]"
         adapter1: "adapter sequence to trim from read 1 [AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC]"
         adapter2: "adapter sequence to trim from read 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]"
-
+		docker: "docker container to run the workflow in"
     }
 
     if (numChunk > 1) {
         call countChunkSize {
             input:
             fastqR1 = fastqR1,
-            numChunk = numChunk
+            numChunk = numChunk,
+			docker = docker
         }
     
         call slicer as slicerR1 { 
             input: 
             fastqR = fastqR1,
-            chunkSize = countChunkSize.chunkSize
+            chunkSize = countChunkSize.chunkSize,
+			docker = docker
         }
         call slicer as slicerR2 { 
             input: 
             fastqR = fastqR2,
-            chunkSize = countChunkSize.chunkSize
+            chunkSize = countChunkSize.chunkSize,
+			docker = docker
         }
     }
 
@@ -130,6 +134,7 @@ task countChunkSize{
         Int numChunk
         Int jobMemory = 16
         Int timeout = 48
+		String docker
     }
     
     parameter_meta {
@@ -146,6 +151,7 @@ task countChunkSize{
     >>>
     
     runtime {
+		docker: docker
         memory: "~{jobMemory} GB"
         timeout: "~{timeout}"
     }
@@ -169,6 +175,7 @@ task slicer {
         String modules = "slicer/0.3.0"
         Int jobMemory = 16
         Int timeout = 48
+		String docker
     }
     
     parameter_meta {
@@ -185,6 +192,7 @@ task slicer {
     >>>
     
     runtime {
+		docker: docker
         memory: "~{jobMemory} GB"
         modules: "~{modules}"
         timeout: "~{timeout}"
