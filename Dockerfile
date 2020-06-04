@@ -26,8 +26,9 @@ RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
 
 #CMD /bin/bash
-#CMD ["whereis", "samtools"]
-CMD /bin/bash -c "source /usr/share/modules/init/bash"
+CMD ["whereis", "samtools"]
+#ENTRYPOINT ["/bin/bash", "-c", "source /usr/share/modules/init/bash"]
+#CMD /bin/bash && source /usr/share/modules/init/bash && module avail 
 #        module use /modules/gsi/modulator/modulefiles/Ubuntu18.04 && \ module avail"
 #        module load bwa/0.7.12 && \
 #        module load slicer/0.3.0 && \
