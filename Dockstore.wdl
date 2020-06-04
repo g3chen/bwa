@@ -12,7 +12,7 @@ workflow bwaMem {
         Int trimMinQuality = 0
         String adapter1 = "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"
         String adapter2 = "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"
-		String docker = "biocontainers/bwa:v0.7.17_cv1"
+		String docker = "g3chen/bwa:1.0"
     }
 
     parameter_meta {
