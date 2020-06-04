@@ -7,7 +7,11 @@ USER root
 
 # move in the yaml to build modulefiles from
 COPY no_python_cutadapt_bwa_recipe.yaml /modulator/code/gsi/recipe.yaml
-RUN ./build-local-code /modulator/code/gsi/recipe.yaml --initsh /usr/share/modules/init/sh --output /modules
+
+# build the modules and set folder / file permissions
+RUN ./build-local-code /modulator/code/gsi/recipe.yaml --initsh /usr/share/modules/init/sh --output /modules && \
+	find /modules -type d -exec chmod 755 {} \; && \
+	find /modules -type f -exec chmod 644 {} \;
 
 RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
