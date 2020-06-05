@@ -10,4 +10,7 @@ task find_tools {
 	output{
 		String message = read_string(stdout())
 	}
+	runtime {
+		docker: "g3chen/bwa:1.0"
+	}
 }
