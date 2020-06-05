@@ -20,4 +20,4 @@ USER ubuntu
 # copy the setup file to load the modules at startup
 COPY .bashrc /home/ubuntu/.bashrc
 
-CMD /bin/bash
+ENTRYPOINT /bin/bash
