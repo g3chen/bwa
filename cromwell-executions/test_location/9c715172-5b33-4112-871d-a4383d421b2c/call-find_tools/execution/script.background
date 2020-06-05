@@ -1,3 +1,0 @@
-#!/bin/bash
-'/bin/bash' '/home/ubuntu/repos/bwa/cromwell-executions/test_location/9c715172-5b33-4112-871d-a4383d421b2c/call-find_tools/execution/script.submit' < /dev/null || { rc=$?; if [ "$rc" -gt "128" ]; then echo $rc; else echo -1; fi } > /home/ubuntu/repos/bwa/cromwell-executions/test_location/9c715172-5b33-4112-871d-a4383d421b2c/call-find_tools/execution/rc &
-echo $!

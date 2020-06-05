@@ -4,6 +4,7 @@ workflow test_location {
 
 task find_tools {
 	command {
+		module avail
 		whereis samtools
 		whereis bwa
 	}
