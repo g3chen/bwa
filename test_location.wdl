@@ -11,6 +11,7 @@ task find_tools {
 		String message = read_string(stdout())
 	}
 	runtime {
-		docker: "g3chen/bwa:1.0"
+		docker: "g3chen/bwa:1.2"
+#		docker: "mtaschuk-bwa:latest"
 	}
 }
