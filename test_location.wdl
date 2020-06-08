@@ -4,7 +4,6 @@ workflow test_location {
 
 task find_tools {
 	command {
-		module avail
 		whereis samtools
 		whereis bwa
 	}
@@ -12,7 +11,6 @@ task find_tools {
 		String message = read_string(stdout())
 	}
 	runtime {
-		# docker: "g3chen/bwa:1.0"	# the container with .bashrc
-		docker: "g3chen/bwa:1.1"	# the container with ENV
+		docker: "g3chen/bwa:1.0"
 	}
 }
