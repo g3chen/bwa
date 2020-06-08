@@ -12,6 +12,7 @@ task find_tools {
 		String message = read_string(stdout())
 	}
 	runtime {
-		docker: "g3chen/bwa:1.0"
+		# docker: "g3chen/bwa:1.0"	# the container with .bashrc
+		docker: "g3chen/bwa:1.1"	# the container with ENV
 	}
 }
