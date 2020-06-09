@@ -1,0 +1,3 @@
+#!/bin/bash
+'/bin/bash' '/home/ubuntu/repos/bwa/cromwell-executions/bwaMem/08f1a3ac-9203-40f3-9f98-874678587d7f/call-runBwaMem/shard-0/execution/script.submit' < /dev/null || { rc=$?; if [ "$rc" -gt "128" ]; then echo $rc; else echo -1; fi } > /home/ubuntu/repos/bwa/cromwell-executions/bwaMem/08f1a3ac-9203-40f3-9f98-874678587d7f/call-runBwaMem/shard-0/execution/rc &
+echo $!
