@@ -15,7 +15,7 @@ RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
 
 # copy in the environment setup file. Note: not sourced if run through Cromwell
-COPY .bashrc /home/ubuntu/.bashrc
+# COPY .bashrc /home/ubuntu/.bashrc
 
 ENV PATH="/modules/gsi/modulator/sw/Ubuntu18.04/cutadapt-1.8.3/bin:/modules/gsi/modulator/sw/Ubuntu18.04/python-2.7/bin:/modules/gsi/modulator/sw/Ubuntu18.04/samtools-1.9/bin:/modules/gsi/modulator/sw/Ubuntu18.04/htslib-1.9/bin:/modules/gsi/modulator/sw/Ubuntu18.04/slicer-0.3.0/bin:/modules/gsi/modulator/sw/Ubuntu18.04/bwa-0.7.12/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ENV SLICER_ROOT="/modules/gsi/modulator/sw/Ubuntu18.04/slicer-0.3.0"
