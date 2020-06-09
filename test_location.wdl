@@ -5,13 +5,14 @@ workflow test_location {
 task find_tools {
 	command {
 #		echo $PATH
-#		whereis samtools
+		samtools
 #		whereis bwa
-		echo $MANPATH
-		echo "@@@@@@@@@@@@@@@@"
-		echo $PYTHONPATH
-		echo "@@@@@@@@@@@@@@@@"
-		echo $LD_LIBRARY_PATH
+#		echo $MANPATH
+#		echo "@@@@@@@@@@@@@@@@"
+#		echo $PYTHONPATH
+#		echo "@@@@@@@@@@@@@@@@"
+#		echo $LD_LIBRARY_PATH
+#		ls /modules/gsi/modulator/sw/Ubuntu18.04/htslib-1.9/lib
 	}
 	output{
 		String message = read_string(stdout())
