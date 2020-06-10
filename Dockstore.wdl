@@ -293,7 +293,7 @@ task runBwaMem {
         File read2s
         String readGroups
         String modules
-        String bwaRef
+        File bwaRef
         String? addParam
         Int threads = 8
         Int jobMemory = 32
