@@ -19,8 +19,10 @@ input {
   File read2
 }
         command <<<
-                bwa mem -M ~{reference} ~{read1} ~{read2}
-	>>>
+          ls -l ~{reference}
+          ls -l ~{read1}
+          ls -l ~{read2}
+        }
         output{
                 String message = read_string(stdout())
         }
