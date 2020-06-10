@@ -301,12 +301,12 @@ task runBwaMem {
 		String docker
 
         # TEMPORARY FILES FOR WORKFLOW TESTING ToDo: remove
-        File fai = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.fai"
-        File amb = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.amb"
-        File ann = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.ann"
-        File bwt = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.bwt"
-        File pac = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.pac"
-        File sa = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.sa"
+        File fai
+        File amb
+        File ann
+        File bwt
+        File pac
+        File sa
     }
 
     parameter_meta {
