@@ -37,7 +37,7 @@ input {
   File read2
 }
         command <<<
-                bwa mem -M ~{reference} ~{read1} ~{read2}
+                bwa mem -M ~{reference} ~{read1} ~{read2} > out.bam
         >>>
         output{
                 String message = read_string(stdout())
