@@ -10,6 +10,8 @@ input {
   File sa = "/home/ubuntu/Downloads/sample_data/hg19_random.fa.sa"
   File read1 = "/home/ubuntu/repos/bwa/bwamem/input_data/PCSI0022C.val.1.fastq.gz"
   File read2 = "/home/ubuntu/repos/bwa/bwamem/input_data/PCSI0022C.val.2.fastq.gz"
+#  String readGroups = "@RG\\tID:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tLB:PCSI0022C\\tPL:ILLUMINA\\tPU:121005_h804_0096_AD0V4NACXX-NoIndex_6\\tSM:PCSI0022C"
+  String readGroups
 }
   call find_tools {
     input:
@@ -21,7 +23,8 @@ input {
       pac=pac,
       sa=sa,
       read1=read1,
-      read2=read2
+      read2=read2,
+      readGroups=readGroups
   } 
 }
 task find_tools {
@@ -35,12 +38,17 @@ input {
   File sa
   File read1
   File read2
+  String readGroups
 }
         command <<<
-                bwa mem -M ~{reference} ~{read1} ~{read2} > out.bam
+                bwa mem -M \
+                -R "~{readGroups}" \
+                ~{reference} \
+                ~{read1} \
+                ~{read2} > out.bam
         >>>
         output{
-                String message = read_string(stdout())
+                File result = "out.bam"
         }
         runtime {
                 docker: "g3chen/bwa:1.0"
