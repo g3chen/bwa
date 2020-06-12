@@ -14,6 +14,17 @@ BwaMem Workflow version 2.0
 
 ## Usage
 
+### Dockstore
+Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+```
+dockstore workflow convert entry2json --entry github.com/g3chen/bwa/BwaMem:master > Dockstore.json  
+vim Dockstore.json
+```
+Run locally with the Dockstore CLI
+```
+dockstore workflow launch --entry github.com/g3chen/bwa/BwaMem:master --json Dockstore.json
+```
+
 ### Cromwell
 ```
 java -jar cromwell.jar run bwaMem.wdl --inputs inputs.json
