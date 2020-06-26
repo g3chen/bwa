@@ -14,7 +14,7 @@ RUN ./build-local-code /modulator/code/gsi/recipe.yaml --initsh /usr/share/modul
 RUN groupadd -r -g 1000 ubuntu && useradd -r -g ubuntu -u 1000 ubuntu
 USER ubuntu
 
-# copy in the environment setup file. Note: not sourced if run through Cromwell
+# copy in the environment setup file
 COPY .bashrc /home/ubuntu/.bashrc
 
 # command on launch
